@@ -1,0 +1,48 @@
+body {
+    text-align: center;
+    background-color: #95a5a6;
+}
+
+p {
+    margin: 0px auto;
+    /*text-shadow: -2px 2px 0px black;*/
+}
+
+input {
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+table {
+    margin: auto;
+}
+
+td,
+th {
+    border: 2px solid white;
+    padding: 10px 0px;
+    text-align: center;
+    font-family: sans-serif;
+    background: transparent;
+}
+
+table {
+    border-collapse: collapse;
+    width: 90%;
+    height: 530px;
+}
+
+input {
+    width: 50%;
+}
+
+#moy {
+    width: 30%;
+}
+
+img{
+    margin : 50px ;
+    width: 600px ;
+    height:600px;
+}
