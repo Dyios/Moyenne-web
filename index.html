@@ -8,9 +8,15 @@
 </head>
 
 <body>
-    <h1>
-        <p>L2-INFORMATIQUE INIM UMBB (2018/2019)</p>
-        <p>( 4éme semestre )</p>
+    <div id="buttons">
+        <button onclick="show(S4,S4_text)">L2-S4 Informatique</button>
+        <button onclick="show(S5,S5_text)">L3-S5 Systeme Informatique</button>
+        <button onclick="show(S6,S6_text)">L3-S6 Systeme Informatique</button>
+    </div>
+    <button id="back"onclick="del();saving()">back</button>
+    <h1 id='welcome'>Bienvenue<p style="font-size:medium;">( PS : les notes ne sont pas sauvegardé sur le site )</p></h1>
+    
+    <h1 id="Titre">
     </h1>
 
     <table>
@@ -26,9 +32,9 @@
         
     </table>
     
-    <div>
-        <img src="./images/S4%20modules.jpg" alt="">
-    </div>
+    <img src="" alt="">
+
+    <p id='download'><a href="./app/Moyenne-win32-x64.zip">Télécharger l'application .</a></p>
 
     <script src="./js/modules.js"></script>
     <script src="./js/index.js"></script>
