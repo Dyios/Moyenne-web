@@ -154,6 +154,8 @@ let S6 = [
         TP : '/' ,
         Examin : null 
     } ,
+    {nom:"Rédaction scientifique",coef:1,"TD":"/",TP:"/",Examin:""},
+    
     {
         nom : "PROJET" ,
         coef : 4 ,

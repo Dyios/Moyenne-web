@@ -1,3 +1,5 @@
+let currentS;
+
 //////////////////////////////////////////////// GENERATION /////////////////////////////////////////////////////////
 function saisie(type, nom, champ, valeur = null) {
     let input = document.createElement("input");
@@ -19,7 +21,7 @@ function saisie(type, nom, champ, valeur = null) {
 }
 //////////////////////// CHOIX /////////////////////////
 
-function show(semestre, description) {
+function show(semestre, description, semestre_name) {
     //set the description
     let title = document.getElementById('Titre');
     let texte = document.createElement('p');
@@ -36,7 +38,13 @@ function show(semestre, description) {
     img.style.display = 'inline';
 
     let table = document.getElementsByTagName("table")[0];
-    semestre.forEach(module => {
+    // check from coockies
+    if( getCookie(semestre_name) != ""){
+        currentS = JSON.parse(getCookie(semestre_name));
+    }else{
+        currentS = semestre;
+    }
+    currentS.forEach(module => {
         let nom = document.createElement("td");
         nom.textContent = module.nom;
         nom.setAttribute("width", 400);
@@ -84,7 +92,7 @@ function show(semestre, description) {
     ligne2.appendChild(moyGeneral);
     table.appendChild(ligne2);
 
-    Moyenne(semestre);
+    Moyenne(semestre_name);
 
     // show again
     document.getElementsByTagName('table')[0].style.display = 'table';
@@ -104,7 +112,28 @@ function roundToTwo(num) {
     return +(Math.round(num + "e+2") + "e-2");
 }
 
-function Moyenne(semestre) {
+function findModule(toFind, compt) {
+    currentS.forEach(module => {
+        if (module.nom === toFind) {
+            if (module.TD != '/') {
+                module.TD = compt[0].value;
+                if (module.TP != '/') {
+                    module.TP = compt[1].value;
+                }
+            } else if (module.TP != '/') {
+                module.TP = compt[0].value;
+            }
+            if (compt[2])
+                module.Examin = compt[2].value;
+            else if (compt[1])
+                module.Examin = compt[1].value;
+            else
+                module.Examin = compt[0].value;
+        }
+    })
+}
+
+function Moyenne(semestre_name) {
     let inputs = document.querySelectorAll(" tr td input[type=number]");
 
     for (let i = 0; i < inputs.length; i++) {
@@ -119,7 +148,10 @@ function Moyenne(semestre) {
             let compt = document.getElementsByName(e.target.name);
             moyMod.value = 0;
 
-            if (semestre == S4) {
+            findModule(e.target.name, compt);
+            setCookie(semestre_name, JSON.stringify(currentS),5);
+
+            if (semestre_name == 'S4') {
                 if (compt.length === 3) {
                     moyMod.value = (((Number(compt[0].value) + Number(compt[1].value)) / 2 + (Number(compt[2].value) * 2)) / 3);
                 } else if ((compt.length === 2)) {
@@ -159,13 +191,20 @@ function Moyenne(semestre) {
 
         let moyMod = lignes[i].querySelector("[type=text]");
 
-        // moyenne module
-        if (Elt.length === 4) {
-            moyMod.value = (((Number(Elt[1].value) + Number(Elt[2].value)) / 2 + (Number(Elt[3].value) * 2)) / 3);
-        } else if (Elt.length === 3) {
-            moyMod.value = (Number(Elt[1].value) + (Number(Elt[2].value) * 2)) / 3;
-        } else
-            moyMod.value = Elt[1].value;
+        // moyenne module On load
+        if (semestre_name === 'S4') {
+            if (Elt.length === 4) {
+                moyMod.value = (((Number(Elt[1].value) + Number(Elt[2].value)) / 2 + (Number(Elt[3].value) * 2)) / 3);
+            } else if (Elt.length === 3) {
+                moyMod.value = (Number(Elt[1].value) + (Number(Elt[2].value) * 2)) / 3;
+            } else
+                moyMod.value = Elt[1].value;
+        }else{
+            if(Elt.length === 3 )
+                moyMod.value = (Number(Elt[1].value) + (Number(Elt[2].value))) / 2;
+            else
+                moyMod.value = Elt[1].value;
+        }
 
         // l afficher
         moyMod.value = roundToTwo(moyMod.value);
@@ -178,7 +217,7 @@ function Moyenne(semestre) {
 
     }
     let Moyenne = document.getElementById("moy");
-    console.log(coefTotal);
+    //console.log(coefTotal);
     for (var i = 0; i < tabmoy.length; i++) {
         Moyenne.value = Number(Moyenne.value) + Number(tabmoy[i] * tabcoef[i]);
     }
